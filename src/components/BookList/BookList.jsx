@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {
   ListUl,
   ListLi,
@@ -26,6 +26,13 @@ export function BookList({ contacts, deleteContact }) {
   );
 }
 
-// BookList.propTypes ={
-//   contacts: PropTypes.array.isRequired,
-// };
+BookList.propTypes = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ),
+  deleteContact: PropTypes.func.isRequired,
+};

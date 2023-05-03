@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Label, Input, Submit } from './BookForm.styled.jsx';
 import { nanoid } from 'nanoid';
+import PropTypes from 'prop-types';
 
 export class BookForm extends Component {
   state = {
@@ -8,7 +9,7 @@ export class BookForm extends Component {
     number: '',
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     const thisContactExist = this.props.addContact({
       id: nanoid(6),
@@ -19,7 +20,7 @@ export class BookForm extends Component {
     }
   };
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -61,3 +62,7 @@ export class BookForm extends Component {
     );
   }
 }
+
+BookForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+};
