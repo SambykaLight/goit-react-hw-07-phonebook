@@ -64,5 +64,5 @@ export class BookForm extends Component {
 }
 
 BookForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func,
 };
