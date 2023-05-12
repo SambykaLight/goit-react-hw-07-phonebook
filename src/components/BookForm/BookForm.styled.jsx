@@ -19,7 +19,7 @@ export const Input = styled.input`
   border: none;
   border-radius: 5px;
   min-height: 35px;
-  border: 2px solid aquamarine;
+  border: 3px solid aquamarine;
 `;
 
 export const Submit = styled.button`
