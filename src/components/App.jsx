@@ -1,80 +1,69 @@
 import { BookForm } from './BookForm/BookForm';
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BookList } from './BookList/BookList';
 import { BookFilter } from './BookFilter/BookFilter';
 import toast, { Toaster } from 'react-hot-toast';
 
-export class App extends Component {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+export function App() {
+  const [contacts, setContacts] = useState(() => {
+    return JSON.parse(localStorage.getItem('contacts')) ?? [];
+  });
+  const [filter, setFilter] = useState('');
 
-  handleAddContact = contact => {
-    if (this.state.contacts.some(item => item.name === contact.name)) {
+  const handleAddContact = contact => {
+    if (contacts.some(item => item.name === contact.name)) {
       toast.error('Nope, you have it...');
       return true;
     }
-    this.setState(prevState => {
-      return {
-        contacts: [...prevState.contacts, contact],
-      };
-    });
+    setContacts(prevState => [...prevState, contact]);
     return false;
   };
 
-  handleDeleteContact = id => {
-    this.setState(prevState => {
-      return {
-        contacts: prevState.contacts.filter(contact => contact.id !== id),
-      };
+  const handleDeleteContact = id => {
+    setContacts(prevState => {
+      return prevState.filter(contact => contact.id !== id);
     });
   };
 
-  handleChangeFilter = e => {
-    this.setState({
-      filter: e.target.value,
-    });
+  const handleChangeFilter = e => {
+    setFilter(e.target.value);
   };
 
-  handleFilterContacts = () => {
-    return this.state.contacts.filter(contact =>
-      contact.name
-        .toLowerCase()
-        .includes(this.state.filter.toLowerCase().trim())
+  const handleFilterContacts = () => {
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase().trim())
     );
   };
 
-  componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
+  // componentDidMount() {
+  //   const contacts = localStorage.getItem('contacts');
+  //   const parsedContacts = JSON.parse(contacts);
 
-  componentDidUpdate(prevState) {
-    const { contacts } = this.state;
-    if (contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
+  //   if (parsedContacts) {
+  //     this.setState({ contacts: parsedContacts });
+  //   }
+  // }
 
-  render() {
-    return (
-      <>
-        <BookForm addContact={this.handleAddContact} />
-        <BookFilter
-          value={this.state.filter}
-          handleChange={this.handleChangeFilter}
-        />
-        <BookList
-          contacts={this.handleFilterContacts()}
-          deleteContact={this.handleDeleteContact}
-        />
-        <Toaster />
-      </>
-    );
-  }
+  // componentDidUpdate(prevState) {
+  //   const { contacts } = this.state;
+  //   if (contacts !== prevState.contacts) {
+  //     localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  //   }
+  // }
+
+  return (
+    <>
+      <BookForm addContact={handleAddContact} />
+      <BookFilter value={filter} handleChange={handleChangeFilter} />
+      <BookList
+        contacts={handleFilterContacts()}
+        deleteContact={handleDeleteContact}
+      />
+      <Toaster />
+    </>
+  );
 }
