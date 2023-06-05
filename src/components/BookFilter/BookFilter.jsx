@@ -1,22 +1,19 @@
 import React from 'react';
 import { FilterDiv, FilterInput } from './BookFilter.styled.jsx';
-import PropTypes from 'prop-types';
+import { setFilter } from '../../redux/Slice.jsx';
+import { useDispatch } from 'react-redux';
 
-export function BookFilter({ handleChange, value }) {
+export function BookFilter() {
+  const dispatch = useDispatch();
+  const onChange = e => {
+    dispatch(setFilter(e.target.value));
+    console.log(e.target.value);
+  };
+
   return (
     <FilterDiv>
       Filter
-      <FilterInput
-        type="text"
-        value={value}
-        onChange={handleChange}
-        name="filter"
-      />
+      <FilterInput type="text" name="filter" onChange={e => onChange(e)} />
     </FilterDiv>
   );
 }
-
-BookFilter.propTypes = {
-  value: PropTypes.string,
-  handleChange: PropTypes.func.isRequired,
-};

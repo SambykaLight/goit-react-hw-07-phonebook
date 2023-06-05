@@ -1,58 +1,30 @@
-import React, { useReducer } from 'react';
 import { Form, Label, Input, Submit } from './BookForm.styled.jsx';
-import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
+// import { nanoid } from 'nanoid';
+import { addContacts } from '../../redux/Slice.jsx';
+import { useSelector, useDispatch } from 'react-redux';
 
-export function reducer(state, action) {
-  switch (action.type) {
-    case 'name':
-      return {
-        ...state,
-        name: action.payload,
-      };
-    case 'number':
-      return {
-        ...state,
-        number: action.payload,
-      };
-    case 'reset':
-      return {
-        name: '',
-        number: '',
-      };
-    default:
-      return state;
-  }
-}
-
-export function BookForm({ addContact }) {
-  const [state, dispatch] = useReducer(reducer, {
-    name: '',
-    number: '',
-  });
-
+export const BookForm = () => {
+  const contacts = useSelector(state => state.contact.items);
+  const dispatch = useDispatch();
   const handleSubmit = e => {
     e.preventDefault();
-    const thisContactExist = addContact({
-      id: nanoid(6),
-      ...state,
-    });
-    if (!thisContactExist) {
-      reset();
+
+    const { name, number } = e.target.elements;
+    const contact = {
+      name: name.value,
+      number: number.value,
+    };
+    if (contacts.some(item => item.name === name.value)) {
+      alert('Nope, you have it...');
+      e.currentTarget.reset();
+      return true;
     }
-  };
-
-  function handleChange(e) {
-    const { name, value } = e.currentTarget;
-    dispatch({ type: name, payload: value });
-  }
-
-  const reset = () => {
-    dispatch({ type: 'reset' });
+    dispatch(addContacts(contact));
+    e.currentTarget.reset();
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={e => handleSubmit(e)}>
       <Label>
         Name
         <Input
@@ -61,8 +33,6 @@ export function BookForm({ addContact }) {
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
-          onChange={handleChange}
-          value={state.name}
         />
       </Label>
       <Label>
@@ -73,15 +43,9 @@ export function BookForm({ addContact }) {
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          onChange={handleChange}
-          value={state.number}
         />
       </Label>
       <Submit type="submit">Submit</Submit>
     </Form>
   );
-}
-
-BookForm.propTypes = {
-  handleSubmit: PropTypes.func,
 };
