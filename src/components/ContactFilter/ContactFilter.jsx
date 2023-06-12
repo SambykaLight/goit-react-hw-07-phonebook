@@ -1,9 +1,9 @@
 import React from 'react';
-import { FilterDiv, FilterInput } from './BookFilter.styled.jsx';
-import { setFilter } from '../../redux/Slice.jsx';
+import { FilterDiv, FilterInput } from './ContactFilter.styled.jsx';
+import { setFilter } from '../../redux/Filter/FilterSlice.jsx';
 import { useDispatch } from 'react-redux';
 
-export function BookFilter() {
+export function ContactFilter() {
   const dispatch = useDispatch();
   const onChange = e => {
     dispatch(setFilter(e.target.value));

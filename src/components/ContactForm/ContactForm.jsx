@@ -1,10 +1,11 @@
-import { Form, Label, Input, Submit } from './BookForm.styled.jsx';
-// import { nanoid } from 'nanoid';
-import { addContacts } from '../../redux/Slice.jsx';
+import { Form, Label, Input, Submit } from './ContactForm.styled.jsx';
+import { addContact } from '../../redux/Contacts/contactsOperations.jsx';
 import { useSelector, useDispatch } from 'react-redux';
+import { selectContacts } from 'redux/Contacts/contactsSelector.jsx';
 
-export const BookForm = () => {
-  const contacts = useSelector(state => state.contact.items);
+export const ContactForm = () => {
+  const contacts = useSelector(selectContacts);
+  console.log(contacts);
   const dispatch = useDispatch();
   const handleSubmit = e => {
     e.preventDefault();
@@ -19,7 +20,7 @@ export const BookForm = () => {
       e.currentTarget.reset();
       return true;
     }
-    dispatch(addContacts(contact));
+    dispatch(addContact(contact));
     e.currentTarget.reset();
   };
 

@@ -1,14 +1,14 @@
-import { BookForm } from './BookForm/BookForm';
+import { ContactForm } from './ContactForm/ContactForm';
 // import React, { useEffect, useState } from 'react';
-import { BookList } from './BookList/BookList';
-import { BookFilter } from './BookFilter/BookFilter';
+import { ContactList } from './ContactList/ContactList';
+import { ContactFilter } from './ContactFilter/ContactFilter';
 
 export function App() {
   return (
     <>
-      <BookForm />
-      <BookFilter />
-      <BookList />
+      <ContactForm />
+      <ContactFilter />
+      <ContactList />
     </>
   );
 }
