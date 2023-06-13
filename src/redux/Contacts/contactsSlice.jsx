@@ -8,7 +8,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 
 const contactsSlice = createSlice({
-  name: 'contacts',
+  name: 'PhoneContact',
   initialState: {
     items: [],
     isLoading: false,
